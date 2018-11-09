@@ -1,0 +1,1072 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>api documentation &mdash; spectra_mole 0.2 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Adjustable parameters" href="params.html" />
+    <link rel="prev" title="spectra mole" href="README.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> spectra_mole
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.2
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="README.html">Overview</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">api documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-spectra_mole">spectra_mole main</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-spectra_mole.advection">advection submodule</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="params.html">Adjustable parameters</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">spectra_mole</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>api documentation</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/api_doc.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="api-documentation">
+<h1>api documentation<a class="headerlink" href="#api-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-spectra_mole">
+<span id="spectra-mole-main"></span><h2>spectra_mole main<a class="headerlink" href="#module-spectra_mole" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="spectra_mole.peaks2snr">
+<code class="descclassname">spectra_mole.</code><code class="descname">peaks2snr</code><span class="sig-paren">(</span><em>noise</em>, <em>z</em>, <em>peaks</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spectra_mole.html#peaks2snr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#spectra_mole.peaks2snr" title="Permalink to this definition">¶</a></dt>
+<dd><p>calculate the snr for each peak</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>noise</strong> (<em>float</em>) – noise level</li>
+<li><strong>z</strong> (<em>1d-array</em>) – spectral reflectivity</li>
+<li><strong>peaks</strong> (<em>tupel</em><em> or </em><em>list of tupels</em>) – boundaries of the peaks</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">SNR value of the peaks (or list of values)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="spectra_mole.gauss_func">
+<code class="descclassname">spectra_mole.</code><code class="descname">gauss_func</code><span class="sig-paren">(</span><em>x</em>, <em>m</em>, <em>sd</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spectra_mole.html#gauss_func"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#spectra_mole.gauss_func" title="Permalink to this definition">¶</a></dt>
+<dd><p>calculate the gaussian function on a given grid</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>x</strong> (<em>array</em>) – grid</li>
+<li><strong>m</strong> (<em>float</em>) – mean</li>
+<li><strong>sd</strong> (<em>float</em>) – standard deviation</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">array</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="spectra_mole.check_consistency">
+<code class="descclassname">spectra_mole.</code><code class="descname">check_consistency</code><span class="sig-paren">(</span><em>lst</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spectra_mole.html#check_consistency"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#spectra_mole.check_consistency" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>lst</strong> – list of spectra dictionaries
+(has to contain <code class="docutils literal notranslate"><span class="pre">system</span></code>, <code class="docutils literal notranslate"><span class="pre">ts</span></code>, <code class="docutils literal notranslate"><span class="pre">range</span></code>)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="spectra_mole.broaden_spectrum">
+<code class="descclassname">spectra_mole.</code><code class="descname">broaden_spectrum</code><span class="sig-paren">(</span><em>adv_tupel</em>, <em>spectrum</em>, <em>cut_thres=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spectra_mole.html#broaden_spectrum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#spectra_mole.broaden_spectrum" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>adv_tupel</strong> (<em>tupel</em>) – advection velocity, shear, (u, v)</li>
+<li><strong>spectrum</strong> (<em>dict</em>) – The second parameter</li>
+<li><strong>cut_thres</strong> (<em>int</em><em>, </em><em>optional</em>) – mask values beow this threshold, else
+use the <code class="docutils literal notranslate"><span class="pre">noise_thres</span></code> in <code class="docutils literal notranslate"><span class="pre">spectrum</span></code></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dict with broadened spectrum</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="spectra_mole.check_particle_influence">
+<code class="descclassname">spectra_mole.</code><code class="descname">check_particle_influence</code><span class="sig-paren">(</span><em>spectrum</em>, <em>noise_thres</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spectra_mole.html#check_particle_influence"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#spectra_mole.check_particle_influence" title="Permalink to this definition">¶</a></dt>
+<dd><p>check if there is signal in the spectrum above the threshold
+internally a Q of 3 is assumed (noise_thres = 3*noise_lvl)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>spectrum</strong> (<em>dict</em>) – spectra dict</li>
+<li><strong>noise_thres</strong> (<em>float</em>) – the noise threshold</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">bflag dict</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="spectra_mole.calc_moments">
+<code class="descclassname">spectra_mole.</code><code class="descname">calc_moments</code><span class="sig-paren">(</span><em>spectrum</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spectra_mole.html#calc_moments"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#spectra_mole.calc_moments" title="Permalink to this definition">¶</a></dt>
+<dd><p>estimate the moments for peaks above the noise threshold
+if no peak is found <code class="docutils literal notranslate"><span class="pre">mom(-200,</span> <span class="pre">-99.,</span> <span class="pre">-99.,</span> <span class="pre">-1,</span> <span class="pre">-1,</span> <span class="pre">-200)</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>spectrum</strong> (<em>dict</em>) – spectra dict</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">list of moments (namedtuple) in decending order</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="spectra_mole.filter_moments">
+<code class="descclassname">spectra_mole.</code><code class="descname">filter_moments</code><span class="sig-paren">(</span><em>moments</em>, <em>v</em>, <em>sigma</em>, <em>cr_iright</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spectra_mole.html#filter_moments"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#spectra_mole.filter_moments" title="Permalink to this definition">¶</a></dt>
+<dd><p>remove all moments that are left of v+sigma, width &lt; 0.08 and moment.iright &gt; cr_iright</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>moments</strong> – list of moments</li>
+<li><strong>v</strong> – mean velocity of cloud radar</li>
+<li><strong>sigma</strong> – width of cloud radar</li>
+<li><strong>cr_iright</strong> – right edge of cloud radar</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">list of filtered moments, bflag</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="spectra_mole.check_rwp_calibration">
+<code class="descclassname">spectra_mole.</code><code class="descname">check_rwp_calibration</code><span class="sig-paren">(</span><em>spectrum_rwp</em>, <em>spectrum_broad</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spectra_mole.html#check_rwp_calibration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#spectra_mole.check_rwp_calibration" title="Permalink to this definition">¶</a></dt>
+<dd><p>check the rwp calibration by comparing with a broadened cloud radar spectrum</p>
+<p>based on different criteria it is decided if the calibration in trustworthy
+(<code class="docutils literal notranslate"><span class="pre">unsecure_calibration</span></code>) and correctable (<code class="docutils literal notranslate"><span class="pre">mod_calibration</span></code>)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>spectrum_rwp</strong> (<em>dict</em>) – spectra dict of the wind profiler</li>
+<li><strong>spectrum_broad</strong> (<em>dict</em>) – spectra dict of cloud radar
+adapted to rwp sampling characteristics</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">bflag, -cal_corr</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="spectra_mole.check_noise_level">
+<code class="descclassname">spectra_mole.</code><code class="descname">check_noise_level</code><span class="sig-paren">(</span><em>spectrum_rwp</em>, <em>extern=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spectra_mole.html#check_noise_level"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#spectra_mole.check_noise_level" title="Permalink to this definition">¶</a></dt>
+<dd><p>check if the Hildebrand-Sekhon noise <code class="docutils literal notranslate"><span class="pre">noise_lvl_hs</span></code> is more than 4dB above the noise
+provided by the standard signal processing
+if yes replace the noise information in the spectrum_rwp</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>spectrum</strong> (<em>dict</em>) – spectra dict</li>
+<li><strong>extern</strong> (<em>optinal</em>) – additional noise threshold</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">spectrum_rwp, bflag</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="spectra_mole.estimate_calibration">
+<code class="descclassname">spectra_mole.</code><code class="descname">estimate_calibration</code><span class="sig-paren">(</span><em>spectrum_rwp</em>, <em>spectrum_broad</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spectra_mole.html#estimate_calibration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#spectra_mole.estimate_calibration" title="Permalink to this definition">¶</a></dt>
+<dd><p>estimate the calibration constant in the interval -3.00 -0.7 m/s</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>spectrum_rwp</strong> (<em>dict</em>) – spectra dict of the wind profiler</li>
+<li><strong>spectrum_broad</strong> (<em>dict</em>) – spectra dict of cloud radar
+adapted to rwp sampling characteristics</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">cal_const or <code class="docutils literal notranslate"><span class="pre">np.nan</span></code> if no signal in this interval</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="spectra_mole.modify_calibration">
+<code class="descclassname">spectra_mole.</code><code class="descname">modify_calibration</code><span class="sig-paren">(</span><em>spectrum</em>, <em>correction_factor</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spectra_mole.html#modify_calibration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#spectra_mole.modify_calibration" title="Permalink to this definition">¶</a></dt>
+<dd><p>update the calibration constant with a correction factor
+and calculate a new reflectivity spectrum from the SNR</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>spectrum_rwp</strong> (<em>dict</em>) – spectra dict</li>
+<li><strong>correction_factor</strong> (<em>float</em>) – </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">modified spectrum dict</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="spectra_mole.correct_with_weighting">
+<code class="descclassname">spectra_mole.</code><code class="descname">correct_with_weighting</code><span class="sig-paren">(</span><em>spec_rwp</em>, <em>spec_broad</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spectra_mole.html#correct_with_weighting"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#spectra_mole.correct_with_weighting" title="Permalink to this definition">¶</a></dt>
+<dd><p>calculate the corrected spectrum with the weighting functions</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>spectrum_rwp</strong> (<em>dict</em>) – spectra dict of the wind profiler</li>
+<li><strong>spectrum_broad</strong> (<em>dict</em>) – spectra dict of cloud radar
+adapted to rwp sampling characteristics</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Bragg only spectrum dict</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="spectra_mole.correct_with_fuzzy">
+<code class="descclassname">spectra_mole.</code><code class="descname">correct_with_fuzzy</code><span class="sig-paren">(</span><em>spec_rwp</em>, <em>spec_broad</em>, <em>savepath=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spectra_mole.html#correct_with_fuzzy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#spectra_mole.correct_with_fuzzy" title="Permalink to this definition">¶</a></dt>
+<dd><p>calculate the corrected spectrum with fuzzy membership
+for later application of the fitting</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>spectrum_rwp</strong> (<em>dict</em>) – spectra dict of the wind profiler</li>
+<li><strong>spectrum_broad</strong> (<em>dict</em>) – spectra dict of cloud radar
+adapted to rwp sampling characteristics</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Bragg only spectrum dict</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="spectra_mole.fit_res_curve">
+<code class="descclassname">spectra_mole.</code><code class="descname">fit_res_curve</code><span class="sig-paren">(</span><em>x</em>, <em>m1</em>, <em>sd1</em>, <em>s1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spectra_mole.html#fit_res_curve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#spectra_mole.fit_res_curve" title="Permalink to this definition">¶</a></dt>
+<dd><p>function that calculates the fit residuals
+<a class="reference external" href="http://stackoverflow.com/questions/10143905/python-two-curve-gaussian-fitting-with-non-linear-least-squares">http://stackoverflow.com/questions/10143905/python-two-curve-gaussian-fitting-with-non-linear-least-squares</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>x</strong> – grid</li>
+<li><strong>m1</strong> – center of the gaussian</li>
+<li><strong>sd1</strong> – standard deviation of the gaussian</li>
+<li><strong>s1</strong> – scale value for the gaussian (here full reflectivity)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="spectra_mole.fit_peak">
+<code class="descclassname">spectra_mole.</code><code class="descname">fit_peak</code><span class="sig-paren">(</span><em>spec_corr</em>, <em>moments</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spectra_mole.html#fit_peak"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#spectra_mole.fit_peak" title="Permalink to this definition">¶</a></dt>
+<dd><p>fit one peak to the fuzzy membership filtered spectrum</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>spectrum_corr</strong> (<em>dict</em>) – Bragg only spectrum</li>
+<li><strong>moments</strong> (<em>list of mom</em>) – list of the moments for this spectrum</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Bragg only spectrum dict</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="spectra_mole.estimate_flag">
+<code class="descclassname">spectra_mole.</code><code class="descname">estimate_flag</code><span class="sig-paren">(</span><em>bflag</em>, <em>corr_moments</em>, <em>cr_moments</em>, <em>cr_ldr</em>, <em>bounds_unfiltered_moments</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spectra_mole.html#estimate_flag"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#spectra_mole.estimate_flag" title="Permalink to this definition">¶</a></dt>
+<dd><p>retrieve the integer flag from the binary flag</p>
+<p>the available integer flags are:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="s1">&#39;not influenced&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="s1">&#39;hydromet only&#39;</span><span class="p">,</span>
+ <span class="mi">2</span><span class="p">:</span> <span class="s1">&#39;plankton&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="s1">&#39;low snr&#39;</span><span class="p">,</span>
+ <span class="mi">4</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="mi">5</span><span class="p">:</span> <span class="s1">&#39;melting layer&#39;</span><span class="p">}</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>bflag</strong> (<em>dict</em>) – binary flag dict</li>
+<li><strong>corr_moments</strong> (<em>list</em>) – list with the corrected moments</li>
+<li><strong>cr_moments</strong> (<em>list</em>) – list with the cloud radar moemnts</li>
+<li><strong>cr_ldr</strong> (<em>float</em>) – cloud radar ldr in dB</li>
+<li><strong>bounds_unfiltered_moments</strong> (<em>list</em>) – all peak boundaries</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">add_to_binary_flag, flag, flag_doc</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="spectra_mole.get_index">
+<code class="descclassname">spectra_mole.</code><code class="descname">get_index</code><span class="sig-paren">(</span><em>grid_mids</em>, <em>values</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spectra_mole.html#get_index"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#spectra_mole.get_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>get the index of a value in an array</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>grid_mids</strong> – array of grid centers</li>
+<li><strong>value</strong> – array of values</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">indices</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="spectra_mole.estimate_error">
+<code class="descclassname">spectra_mole.</code><code class="descname">estimate_error</code><span class="sig-paren">(</span><em>method</em>, <em>separation</em>, <em>contrast</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spectra_mole.html#estimate_error"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#spectra_mole.estimate_error" title="Permalink to this definition">¶</a></dt>
+<dd><p>estimate the error for given separation and contrast form Monte Carlo simulation</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>method</strong> – <code class="docutils literal notranslate"><span class="pre">diff</span></code> of <code class="docutils literal notranslate"><span class="pre">fit</span></code></li>
+<li><strong>separation</strong> – array of separations</li>
+<li><strong>contrast</strong> – array of separations</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">array of estimated error</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="spectra_mole.calc_separation">
+<code class="descclassname">spectra_mole.</code><code class="descname">calc_separation</code><span class="sig-paren">(</span><em>bragg_mom</em>, <em>moments_broad</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spectra_mole.html#calc_separation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#spectra_mole.calc_separation" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>bragg_mom</strong> – moments of the Bragg peak</li>
+<li><strong>moments_broad</strong> – moments of the (adapted to RWP sampling) cloud radar peak</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="spectra_mole.calc_contrast">
+<code class="descclassname">spectra_mole.</code><code class="descname">calc_contrast</code><span class="sig-paren">(</span><em>spec_corr</em>, <em>spec_broad</em>, <em>v</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spectra_mole.html#calc_contrast"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#spectra_mole.calc_contrast" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>spec_corr</strong> (<em>dict</em>) – Bragg only spectrum</li>
+<li><strong>spec_broad</strong> (<em>dict</em>) – spectra dict of cloud radar
+adapted to rwp sampling characteristics</li>
+<li><strong>v</strong> (<em>float</em>) – velocity at which the contrast is evlauated</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="spectra_mole.bflag2str">
+<code class="descclassname">spectra_mole.</code><code class="descname">bflag2str</code><span class="sig-paren">(</span><em>bflag</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spectra_mole.html#bflag2str"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#spectra_mole.bflag2str" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>bflag</strong> (<em>dict</em>) – binary flag</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">flag as binary string, keys</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="spectra_mole.bin2int">
+<code class="descclassname">spectra_mole.</code><code class="descname">bin2int</code><span class="sig-paren">(</span><em>bin</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spectra_mole.html#bin2int"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#spectra_mole.bin2int" title="Permalink to this definition">¶</a></dt>
+<dd><p>convert the binary (as string) to integer</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="spectra_mole.correct_pixel">
+<code class="descclassname">spectra_mole.</code><code class="descname">correct_pixel</code><span class="sig-paren">(</span><em>cr</em>, <em>rwp</em>, <em>advect</em>, <em>sel_ts</em>, <em>sel_range</em>, <em>visualize=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spectra_mole.html#correct_pixel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#spectra_mole.correct_pixel" title="Permalink to this definition">¶</a></dt>
+<dd><p>do the correction for a single pixel</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>cr</strong> – cloud radar handler</li>
+<li><strong>rwp</strong> – radar wind profiler handler</li>
+<li><strong>advect</strong> – advection handler</li>
+<li><strong>sel_ts</strong> (<em>tuple</em><em> or </em><em>float</em>) – either value or (index, value)</li>
+<li><strong>sel_range</strong> (<em>tuple</em><em> or </em><em>float</em>) – either value or (index, value)</li>
+<li><strong>visualize</strong> (<em>bool</em><em>, </em><em>optional</em>) – plot the single spectrum</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dict with estimated values</p>
+</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="24%" />
+<col width="76%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Key</th>
+<th class="head">Example</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">bragg_weighting</span></code></td>
+<td>vertical velocity estimated with the weighting method</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">bragg_fit</span></code></td>
+<td>vertical velocity estimated with the fit method</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">spec_rwp</span></code></td>
+<td>spectra dict of the radar wind profiler</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">spec_broad</span></code></td>
+<td>spectra dict of the cloud radar (adapted to rwp)</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">flag</span></code></td>
+<td>integer flag</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">bflag</span></code></td>
+<td>binary flag (dict)</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">metrics</span></code></td>
+<td>separation and contrast</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">cal_const</span></code></td>
+<td>used calibration constant</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">cal_corr</span></code></td>
+<td>correct calibration by</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="spectra_mole.mira">
+<em class="property">class </em><code class="descclassname">spectra_mole.</code><code class="descname">mira</code><span class="sig-paren">(</span><em>files</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spectra_mole.html#mira"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#spectra_mole.mira" title="Permalink to this definition">¶</a></dt>
+<dd><p>handles cloud radar spectra</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>files</strong> (<em>dict</em>) – filenames for spectral, cloudnet and mmclx</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="spectra_mole.mira.get_profile">
+<code class="descname">get_profile</code><span class="sig-paren">(</span><em>it</em>, <em>ir=(0</em>, <em>-1)</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spectra_mole.html#mira.get_profile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#spectra_mole.mira.get_profile" title="Permalink to this definition">¶</a></dt>
+<dd><p>get the mmclx velocity profile</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">currently using Zg, RMSg togehter with VEL</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>it</strong> – time index</li>
+<li><strong>ir</strong> (<em>tuple</em><em>, </em><em>optional</em>) – range indices, default full profile</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">vel, Z, width</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="spectra_mole.mira.get_spectrum">
+<code class="descname">get_spectrum</code><span class="sig-paren">(</span><em>sel_ts</em>, <em>sel_range</em>, <em>silent=False</em>, <em>range_average=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spectra_mole.html#mira.get_spectrum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#spectra_mole.mira.get_spectrum" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>sel_ts</strong> (<em>float</em><em> or </em><em>tuple</em>) – either timestamp or (it, timestamp)</li>
+<li><strong>sel_range</strong> (<em>float</em><em> or </em><em>tuple</em>) – either range or (ir, range)</li>
+<li><strong>silent</strong> (<em>bool</em><em>, </em><em>optional</em>) – printing diagnostics</li>
+<li><strong>range_average</strong> (<em>bool</em><em>, </em><em>optional</em>) – range average to adapt for the
+rwp range gate</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">spectrum dict</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="spectra_mole.rwp">
+<em class="property">class </em><code class="descclassname">spectra_mole.</code><code class="descname">rwp</code><span class="sig-paren">(</span><em>files</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spectra_mole.html#rwp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#spectra_mole.rwp" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>files</strong> (<em>dict</em>) – filename for rwp</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="spectra_mole.rwp.get_spectrum">
+<code class="descname">get_spectrum</code><span class="sig-paren">(</span><em>sel_ts</em>, <em>sel_range</em>, <em>silent=False</em>, <em>interp_vel=False</em>, <em>cal_corr=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spectra_mole.html#rwp.get_spectrum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#spectra_mole.rwp.get_spectrum" title="Permalink to this definition">¶</a></dt>
+<dd><p>return a single spectrum</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">rwp spectrum is smoothed with a gaussian shaped running window</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>sel_ts</strong> (<em>float</em><em> or </em><em>tuple</em>) – either timestamp or (it, timestamp)</li>
+<li><strong>sel_range</strong> (<em>float</em><em> or </em><em>tuple</em>) – either range or (ir, range)</li>
+<li><strong>silent</strong> (<em>bool</em><em>, </em><em>optional</em>) – printing diagnostics</li>
+<li><strong>interp_vel</strong> (<em>bool</em><em>, </em><em>optional</em>) – velocity array to interpolate</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">spectrum dict</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="spectra_mole.mole_output">
+<em class="property">class </em><code class="descclassname">spectra_mole.</code><code class="descname">mole_output</code><span class="sig-paren">(</span><em>files</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spectra_mole.html#mole_output"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#spectra_mole.mole_output" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>files</strong> (<em>dict</em>) – filename for mole</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="spectra_mole.mole_output.get_interpolated_profile">
+<code class="descname">get_interpolated_profile</code><span class="sig-paren">(</span><em>it</em>, <em>interp_heights</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spectra_mole.html#mole_output.get_interpolated_profile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#spectra_mole.mole_output.get_interpolated_profile" title="Permalink to this definition">¶</a></dt>
+<dd><p>load the windprofiler spectrum</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>it</strong> (<em>int</em>) – index of timestamp</li>
+<li><strong>interp_heights</strong> (<em>array</em>) – dersired height grid</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">profile of velocities, flag</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="spectra_mole.correct_region">
+<code class="descclassname">spectra_mole.</code><code class="descname">correct_region</code><span class="sig-paren">(</span><em>bounds</em>, <em>files</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spectra_mole.html#correct_region"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#spectra_mole.correct_region" title="Permalink to this definition">¶</a></dt>
+<dd><p>run the correction for a specified region</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>bounds</strong> (<em>dict</em>) – time and height boundaries for this case</li>
+<li><strong>files</strong> (<em>dict</em>) – file list for this case</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">data dict with the results</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="spectra_mole.terminal_region">
+<code class="descclassname">spectra_mole.</code><code class="descname">terminal_region</code><span class="sig-paren">(</span><em>bounds</em>, <em>files</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spectra_mole.html#terminal_region"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#spectra_mole.terminal_region" title="Permalink to this definition">¶</a></dt>
+<dd><p>calculate the terminal velocity for a specified region</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>bounds</strong> (<em>dict</em>) – time and height boundaries for this case</li>
+<li><strong>files</strong> (<em>dict</em>) – file list for this case</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">data dict with the results</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-spectra_mole.advection">
+<span id="advection-submodule"></span><h2>advection submodule<a class="headerlink" href="#module-spectra_mole.advection" title="Permalink to this headline">¶</a></h2>
+<p>Load the horizontal wind velocity from different sources</p>
+<dl class="function">
+<dt id="spectra_mole.advection.calc_hvel">
+<code class="descclassname">spectra_mole.advection.</code><code class="descname">calc_hvel</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spectra_mole/advection.html#calc_hvel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#spectra_mole.advection.calc_hvel" title="Permalink to this definition">¶</a></dt>
+<dd><p>calculate absolute horizontal velocity from gdas data piece</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="spectra_mole.advection.nearest">
+<code class="descclassname">spectra_mole.advection.</code><code class="descname">nearest</code><span class="sig-paren">(</span><em>point</em>, <em>array</em>, <em>delta</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spectra_mole/advection.html#nearest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#spectra_mole.advection.nearest" title="Permalink to this definition">¶</a></dt>
+<dd><p>searches nearest point in given array and returns (i, value[i])</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>point</strong> – value to find</li>
+<li><strong>array</strong> – array of values</li>
+<li><strong>delta</strong> – step in array</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><code class="docutils literal notranslate"><span class="pre">(index,</span> <span class="pre">nearest_value)</span></code></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="spectra_mole.advection.gdas">
+<em class="property">class </em><code class="descclassname">spectra_mole.advection.</code><code class="descname">gdas</code><span class="sig-paren">(</span><em>dt</em>, <em>height_grid</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spectra_mole/advection.html#gdas"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#spectra_mole.advection.gdas" title="Permalink to this definition">¶</a></dt>
+<dd><p>loads advection speed profile from gdas data, interpolates it to a (given) grid
+and provides it to spectra mole;
+there it is used for the correction of beam width broadening
+height grid may be specified, whereas time grid is fixed</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>dt</strong> – date of the measurement</li>
+<li><strong>height_grid</strong> – height grid to interpolate</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="spectra_mole.advection.gdas.get_pixel">
+<code class="descname">get_pixel</code><span class="sig-paren">(</span><em>ts</em>, <em>height</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spectra_mole/advection.html#gdas.get_pixel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#spectra_mole.advection.gdas.get_pixel" title="Permalink to this definition">¶</a></dt>
+<dd><p>get nearest advection information</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>ts</strong> – timestamp</li>
+<li><strong>height</strong> – height in profile</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">shear not working yet (grid too coarse)</p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="spectra_mole.advection.wp_advect">
+<em class="property">class </em><code class="descclassname">spectra_mole.advection.</code><code class="descname">wp_advect</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spectra_mole/advection.html#wp_advect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#spectra_mole.advection.wp_advect" title="Permalink to this definition">¶</a></dt>
+<dd><p>loads advection velocity profile form the windprofiler off-zenith measurement</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> – file with rwp off zenith observation</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="spectra_mole.advection.wp_advect.get_pixel">
+<code class="descname">get_pixel</code><span class="sig-paren">(</span><em>ts</em>, <em>height</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spectra_mole/advection.html#wp_advect.get_pixel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#spectra_mole.advection.wp_advect.get_pixel" title="Permalink to this definition">¶</a></dt>
+<dd><p>get nearest advection information
+2D interpolation included</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ts</strong> – timestamp</li>
+<li><strong>height</strong> – height in profile</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><code class="docutils literal notranslate"><span class="pre">advect_vel,</span> <span class="pre">0.0,</span> <span class="pre">(u_ts,</span> <span class="pre">v_ts)</span></code></p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">shear not tested</p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="spectra_mole.advection.cloudnet_advect">
+<em class="property">class </em><code class="descclassname">spectra_mole.advection.</code><code class="descname">cloudnet_advect</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spectra_mole/advection.html#cloudnet_advect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#spectra_mole.advection.cloudnet_advect" title="Permalink to this definition">¶</a></dt>
+<dd><p>load the advection velocity from the cloudnet categorize file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> – file with rwp off zenith observation</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="spectra_mole.advection.cloudnet_advect.get_pixel">
+<code class="descname">get_pixel</code><span class="sig-paren">(</span><em>ts</em>, <em>height</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/spectra_mole/advection.html#cloudnet_advect.get_pixel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#spectra_mole.advection.cloudnet_advect.get_pixel" title="Permalink to this definition">¶</a></dt>
+<dd><p>get nearest advection information
+2D interpolation included</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ts</strong> – timestamp</li>
+<li><strong>height</strong> – height in profile</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><code class="docutils literal notranslate"><span class="pre">advect_vel,</span> <span class="pre">shear,</span> <span class="pre">(u_ts,</span> <span class="pre">v_ts)</span></code></p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">shear not reliable yet (grid too coarse)</p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="params.html" class="btn btn-neutral float-right" title="Adjustable parameters" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="README.html" class="btn btn-neutral" title="spectra mole" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Martin Radenz, Johannes Bühl
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

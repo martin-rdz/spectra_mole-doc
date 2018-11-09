@@ -1,0 +1,303 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>spectra mole &mdash; spectra_mole 0.2 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="api documentation" href="api_doc.html" />
+    <link rel="prev" title="spectra_mole documentation" href="index.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> spectra_mole
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.2
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#setup">Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#run-with-docker">Run with Docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#references">References</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#license">License</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api_doc.html">api documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="params.html">Adjustable parameters</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">spectra_mole</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>spectra mole</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/README.md.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="spectra-mole">
+<span id="spectra-mole"></span><h1>spectra mole<a class="headerlink" href="#spectra-mole" title="Permalink to this headline">¶</a></h1>
+<p>Software for combining the Doppler spectra of a radar wind profiler and a cloud radar.
+The signal of falling particles is separeted from the clear air Bragg scattering using an
+algorithm proposed by Radenz et al <a class="reference external" href="https://doi.org/10.5194/amt-11-5925-2018">2018, AMT</a>.</p>
+<p><a href="https://doi.org/10.5281/zenodo.1419486"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.1419486.svg" alt="DOI"></a></p>
+<p>Comprehensive documentation is available at <a class="reference external" href="https://martin-rdz.github.io/spectra_mole-doc/">spectra_mole-doc</a></p>
+<div class="section" id="requirements">
+<span id="requirements"></span><h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
+<p>spectra mole requires python3 with following packages:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">matplotlib</span><span class="o">==</span><span class="mf">1.5</span><span class="o">.</span><span class="mi">1</span>
+<span class="n">numpy</span><span class="o">==</span><span class="mf">1.11</span><span class="o">.</span><span class="mi">0</span>
+<span class="n">netCDF4</span><span class="o">==</span><span class="mf">1.3</span><span class="o">.</span><span class="mi">1</span>
+<span class="n">numba</span><span class="o">==</span><span class="mf">0.37</span><span class="o">.</span><span class="mi">0</span>
+<span class="n">scipy</span><span class="o">==</span><span class="mf">1.0</span><span class="o">.</span><span class="mi">1</span>
+<span class="n">toml</span><span class="o">==</span><span class="mf">0.9</span><span class="o">.</span><span class="mi">2</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="setup">
+<span id="setup"></span><h2>Setup<a class="headerlink" href="#setup" title="Permalink to this headline">¶</a></h2>
+<p>The spectra mole software package should be included in a file structure similar to this example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>├── raw_data
+│   ├── [cloud radar, rwp, ...]
+│   └── [... as defined in filenames.toml]
+├── output
+│   └── [standard directiory for the output netcdf files]
+├── plots
+├── filenames.toml      [defines the filenames for each day]
+├── regions_config.toml [defines the time that is processed]
+├── cases.csv           [cases for the single spectrum processing]
+└── spectra_mole        [the software under version control]
+    ├── data
+    │   ├── results_2D_diff_statistics.npz
+    │   └── results_2D_fit_statistics.npz
+    ├── cases_from_csv.ipynb
+    ├── dev_calibration_corr.ipynb
+    ├── mole_the_old_way.ipynb
+    ├── plot_2d_cr_grid.py
+    ├── plot_2d.ipynb
+    ├── plot_2d_rwp_grid.py
+    ├── plot_2d_terminal.ipynb
+    ├── README.md
+    ├── requirements.txt
+    ├── run_correct_region.py
+    └── spectra_mole
+        ├── advection.py
+        ├── attenuation.py
+        ├── helpers.py
+        ├── __init__.py
+        ├── recPeakFinder.py
+        ├── viridis.py
+        ├── VIS_Colormaps.py
+        ├── vis.py
+        └── writer.py
+</pre></div>
+</div>
+<p>Please update your meta information in the <code class="docutils literal notranslate"><span class="pre">output_meta.toml</span></code> file.</p>
+</div>
+<div class="section" id="run-with-docker">
+<span id="run-with-docker"></span><h2>Run with Docker<a class="headerlink" href="#run-with-docker" title="Permalink to this headline">¶</a></h2>
+<p>Deployment may be simplified using a docker image which includes all the dependencies.
+A Dockerfile is included in this repository.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span># build the Dockerfile
+docker build -t mole-runtime .
+# run an interactive bash on this image
+docker run -v `pwd`:/mole2 -v [folder with data]:/colrawi -p 8890:8890 -it mole-runtime /bin/bash
+# or to build the documentation as well
+docker run -v `pwd`/..:/mole2 -v [folder with data]:/colrawi -p 8890:8890 -it mole-runtime /bin/bash
+</pre></div>
+</div>
+</div>
+<div class="section" id="references">
+<span id="references"></span><h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<p>Radenz, M., Bühl, J., Lehmann, V., Görsdorf, U., and Leinweber, R.: Combining cloud radar and radar wind profiler for a value added estimate of vertical air motion and particle terminal velocity within clouds, Atmos. Meas. Tech., 11, 5925-5940, <a class="reference external" href="https://doi.org/10.5194/amt-11-5925-2018">https://doi.org/10.5194/amt-11-5925-2018</a>, 2018.</p>
+</div>
+<div class="section" id="license">
+<span id="license"></span><h2>License<a class="headerlink" href="#license" title="Permalink to this headline">¶</a></h2>
+<p>Copyright 2018, Martin Radenz
+<a class="reference external" href="http://www.opensource.org/licenses/mit-license.php">MIT License</a></p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="api_doc.html" class="btn btn-neutral float-right" title="api documentation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="spectra_mole documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Martin Radenz, Johannes Bühl
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

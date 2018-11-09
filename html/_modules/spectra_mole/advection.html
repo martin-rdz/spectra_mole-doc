@@ -1,0 +1,562 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>spectra_mole.advection &mdash; spectra_mole 0.2 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> spectra_mole
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.2
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../README.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api_doc.html">api documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../params.html">Adjustable parameters</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">spectra_mole</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../spectra_mole.html">spectra_mole</a> &raquo;</li>
+        
+      <li>spectra_mole.advection</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for spectra_mole.advection</h1><div class="highlight"><pre>
+<span></span><span class="ch">#! /usr/bin/env python3</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Load the horizontal wind velocity from different sources</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Author: radenz@tropos.de</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1">#from __future__ import print_function</span>
+<span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">netCDF4</span>   
+<span class="c1">#from Scientific.IO import NetCDF</span>
+<span class="kn">import</span> <span class="nn">scipy.interpolate</span> <span class="k">as</span> <span class="nn">interp</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+
+<div class="viewcode-block" id="calc_hvel"><a class="viewcode-back" href="../../api_doc.html#spectra_mole.advection.calc_hvel">[docs]</a><span class="k">def</span> <span class="nf">calc_hvel</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;calculate absolute horizontal velocity from gdas data piece&quot;&quot;&quot;</span>
+    <span class="n">hvel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">data</span><span class="p">[:,</span><span class="mi">4</span><span class="p">],</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">data</span><span class="p">[:,</span><span class="mi">5</span><span class="p">],</span> <span class="mi">2</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">hvel</span></div>
+
+    
+<span class="k">def</span> <span class="nf">dt_to_timestamp</span><span class="p">(</span><span class="n">dt</span><span class="p">):</span>
+    <span class="c1">#timestamp_midnight = int((datetime.datetime(self.dt[1].year, self.dt[1].month, self.dt[1].day) - datetime.datetime(1970, 1, 1)) / datetime.timedelta(seconds=1)) #python3</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">dt</span> <span class="o">-</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">1970</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">ts_to_dt</span><span class="p">(</span><span class="n">ts</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcfromtimestamp</span><span class="p">(</span><span class="n">ts</span><span class="p">)</span>
+
+    
+<div class="viewcode-block" id="nearest"><a class="viewcode-back" href="../../api_doc.html#spectra_mole.advection.nearest">[docs]</a><span class="k">def</span> <span class="nf">nearest</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">array</span><span class="p">,</span> <span class="n">delta</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; searches nearest point in given array and returns (i, value[i]) </span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        point: value to find</span>
+<span class="sd">        array: array of values</span>
+<span class="sd">        delta: step in array</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        ``(index, nearest_value)``</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1">#i = bisect.bisect_left(array, point)</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span> <span class="p">(</span><span class="n">point</span> <span class="o">-</span> <span class="n">array</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">/</span><span class="n">delta</span> <span class="p">)</span>
+    <span class="c1">#print(&quot;search nearest &quot;, i, point, &quot; | &quot;, array[max(0,i-5):i+6])</span>
+    <span class="c1">#print(&quot;array shape &quot;, array.shape)</span>
+    <span class="n">nearest</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span> <span class="n">array</span><span class="p">[</span><span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">i</span><span class="o">-</span><span class="mi">10</span><span class="p">):</span><span class="n">i</span><span class="o">+</span><span class="mi">10</span><span class="p">],</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="nb">abs</span><span class="p">(</span><span class="n">point</span> <span class="o">-</span> <span class="n">t</span><span class="p">)</span> <span class="p">)</span>
+    <span class="c1">#print(&#39;nearest &#39;, nearest)</span>
+    <span class="c1">#print(&#39;np.where &#39;, np.where(array==nearest))</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">array</span><span class="o">==</span><span class="n">nearest</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">nearest</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="gdas"><a class="viewcode-back" href="../../api_doc.html#spectra_mole.advection.gdas">[docs]</a><span class="k">class</span> <span class="nc">gdas</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    loads advection speed profile from gdas data, interpolates it to a (given) grid</span>
+<span class="sd">    and provides it to spectra mole;</span>
+<span class="sd">    there it is used for the correction of beam width broadening</span>
+<span class="sd">    height grid may be specified, whereas time grid is fixed</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        dt: date of the measurement</span>
+<span class="sd">        height_grid: height grid to interpolate</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">height_grid</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dt</span> <span class="o">=</span> <span class="n">dt</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">height_grid</span> <span class="o">=</span> <span class="n">height_grid</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">delta_h</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">height_grid</span><span class="p">))</span>
+        <span class="n">filepath</span><span class="o">=</span><span class="s2">&quot;../radiosondes/&quot;</span>
+        <span class="n">data00</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">filepath</span><span class="o">+</span><span class="s2">&quot;gdas_lindenberg_&quot;</span><span class="o">+</span><span class="n">dt</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y%m</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;_00.txt&quot;</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">data03</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">filepath</span><span class="o">+</span><span class="s2">&quot;gdas_lindenberg_&quot;</span><span class="o">+</span><span class="n">dt</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y%m</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;_03.txt&quot;</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">data06</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">filepath</span><span class="o">+</span><span class="s2">&quot;gdas_lindenberg_&quot;</span><span class="o">+</span><span class="n">dt</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y%m</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;_06.txt&quot;</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">data09</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">filepath</span><span class="o">+</span><span class="s2">&quot;gdas_lindenberg_&quot;</span><span class="o">+</span><span class="n">dt</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y%m</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;_09.txt&quot;</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">data12</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">filepath</span><span class="o">+</span><span class="s2">&quot;gdas_lindenberg_&quot;</span><span class="o">+</span><span class="n">dt</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y%m</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;_12.txt&quot;</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">data15</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">filepath</span><span class="o">+</span><span class="s2">&quot;gdas_lindenberg_&quot;</span><span class="o">+</span><span class="n">dt</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y%m</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;_15.txt&quot;</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">data18</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">filepath</span><span class="o">+</span><span class="s2">&quot;gdas_lindenberg_&quot;</span><span class="o">+</span><span class="n">dt</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y%m</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;_18.txt&quot;</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">data21</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">filepath</span><span class="o">+</span><span class="s2">&quot;gdas_lindenberg_&quot;</span><span class="o">+</span><span class="n">dt</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y%m</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;_21.txt&quot;</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">data24</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">filepath</span><span class="o">+</span><span class="s2">&quot;gdas_lindenberg_&quot;</span>
+                            <span class="o">+</span><span class="p">(</span><span class="n">dt</span><span class="o">+</span><span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y%m</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;_00.txt&quot;</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="c1">#print(data24[:,2])</span>
+        <span class="c1">#self.profiles_height: height interpolated horizontal winds</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">profiles_height</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">9</span><span class="p">,</span> <span class="n">height_grid</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+        <span class="n">height_interp</span> <span class="o">=</span> <span class="n">interp</span><span class="o">.</span><span class="n">interp1d</span><span class="p">(</span><span class="n">data00</span><span class="p">[:,</span><span class="mi">2</span><span class="p">],</span> <span class="n">calc_hvel</span><span class="p">(</span><span class="n">data00</span><span class="p">),</span><span class="n">bounds_error</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">profiles_height</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">height_interp</span><span class="p">(</span><span class="n">height_grid</span><span class="p">)</span>
+        <span class="n">height_interp</span> <span class="o">=</span> <span class="n">interp</span><span class="o">.</span><span class="n">interp1d</span><span class="p">(</span><span class="n">data03</span><span class="p">[:,</span><span class="mi">2</span><span class="p">],</span> <span class="n">calc_hvel</span><span class="p">(</span><span class="n">data03</span><span class="p">),</span><span class="n">bounds_error</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">profiles_height</span><span class="p">[</span><span class="mi">1</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">height_interp</span><span class="p">(</span><span class="n">height_grid</span><span class="p">)</span>
+        <span class="n">height_interp</span> <span class="o">=</span> <span class="n">interp</span><span class="o">.</span><span class="n">interp1d</span><span class="p">(</span><span class="n">data06</span><span class="p">[:,</span><span class="mi">2</span><span class="p">],</span> <span class="n">calc_hvel</span><span class="p">(</span><span class="n">data06</span><span class="p">),</span><span class="n">bounds_error</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">profiles_height</span><span class="p">[</span><span class="mi">2</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">height_interp</span><span class="p">(</span><span class="n">height_grid</span><span class="p">)</span>
+        <span class="n">height_interp</span> <span class="o">=</span> <span class="n">interp</span><span class="o">.</span><span class="n">interp1d</span><span class="p">(</span><span class="n">data09</span><span class="p">[:,</span><span class="mi">2</span><span class="p">],</span> <span class="n">calc_hvel</span><span class="p">(</span><span class="n">data09</span><span class="p">),</span><span class="n">bounds_error</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">profiles_height</span><span class="p">[</span><span class="mi">3</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">height_interp</span><span class="p">(</span><span class="n">height_grid</span><span class="p">)</span>
+        <span class="n">height_interp</span> <span class="o">=</span> <span class="n">interp</span><span class="o">.</span><span class="n">interp1d</span><span class="p">(</span><span class="n">data12</span><span class="p">[:,</span><span class="mi">2</span><span class="p">],</span> <span class="n">calc_hvel</span><span class="p">(</span><span class="n">data12</span><span class="p">),</span><span class="n">bounds_error</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">profiles_height</span><span class="p">[</span><span class="mi">4</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">height_interp</span><span class="p">(</span><span class="n">height_grid</span><span class="p">)</span>
+        <span class="n">height_interp</span> <span class="o">=</span> <span class="n">interp</span><span class="o">.</span><span class="n">interp1d</span><span class="p">(</span><span class="n">data15</span><span class="p">[:,</span><span class="mi">2</span><span class="p">],</span> <span class="n">calc_hvel</span><span class="p">(</span><span class="n">data15</span><span class="p">),</span><span class="n">bounds_error</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">profiles_height</span><span class="p">[</span><span class="mi">5</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">height_interp</span><span class="p">(</span><span class="n">height_grid</span><span class="p">)</span>
+        <span class="n">height_interp</span> <span class="o">=</span> <span class="n">interp</span><span class="o">.</span><span class="n">interp1d</span><span class="p">(</span><span class="n">data18</span><span class="p">[:,</span><span class="mi">2</span><span class="p">],</span> <span class="n">calc_hvel</span><span class="p">(</span><span class="n">data18</span><span class="p">),</span><span class="n">bounds_error</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">profiles_height</span><span class="p">[</span><span class="mi">6</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">height_interp</span><span class="p">(</span><span class="n">height_grid</span><span class="p">)</span>
+        <span class="n">height_interp</span> <span class="o">=</span> <span class="n">interp</span><span class="o">.</span><span class="n">interp1d</span><span class="p">(</span><span class="n">data21</span><span class="p">[:,</span><span class="mi">2</span><span class="p">],</span> <span class="n">calc_hvel</span><span class="p">(</span><span class="n">data21</span><span class="p">),</span><span class="n">bounds_error</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">profiles_height</span><span class="p">[</span><span class="mi">7</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">height_interp</span><span class="p">(</span><span class="n">height_grid</span><span class="p">)</span>
+        <span class="n">height_interp</span> <span class="o">=</span> <span class="n">interp</span><span class="o">.</span><span class="n">interp1d</span><span class="p">(</span><span class="n">data24</span><span class="p">[:,</span><span class="mi">2</span><span class="p">],</span> <span class="n">calc_hvel</span><span class="p">(</span><span class="n">data24</span><span class="p">),</span><span class="n">bounds_error</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">profiles_height</span><span class="p">[</span><span class="mi">8</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">height_interp</span><span class="p">(</span><span class="n">height_grid</span><span class="p">)</span>
+        
+        <span class="n">time_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">86401</span><span class="p">,</span><span class="mi">10800</span><span class="p">)</span>
+        <span class="n">time_list</span> <span class="o">+=</span> <span class="n">dt_to_timestamp</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">delta_t</span> <span class="o">=</span> <span class="mi">1800</span>   <span class="c1">#30min used for grid generation and searching</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">time_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">86401</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">delta_t</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">time_grid</span> <span class="o">+=</span> <span class="n">dt_to_timestamp</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">delta_h</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">height_grid</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">profiles</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">time_grid</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">height_grid</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">height_grid</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="n">time_interp</span> <span class="o">=</span> <span class="n">interp</span><span class="o">.</span><span class="n">interp1d</span><span class="p">(</span><span class="n">time_list</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">profiles_height</span><span class="p">[:,</span><span class="n">i</span><span class="p">],</span> <span class="n">bounds_error</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">profiles</span><span class="p">[:,</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">time_interp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">time_grid</span><span class="p">)</span>
+
+        <span class="c1">#plot for test reason</span>
+        <span class="c1">#fig, ax = plt.subplots(1, figsize=(10, 8))</span>
+        <span class="c1">#pcmesh = ax.pcolormesh(time_list,</span>
+        <span class="c1">#              self.height_grid, np.transpose(self.profiles_height),</span>
+        <span class="c1">#              cmap=&#39;gist_rainbow_r&#39;)</span>
+        <span class="c1">#cbar = fig.colorbar(pcmesh)</span>
+        
+        <span class="c1">#fig, ax = plt.subplots(1, figsize=(10, 8))</span>
+        <span class="c1">#pcmesh = ax.pcolormesh(self.time_grid, </span>
+        <span class="c1">#              self.height_grid, np.transpose(self.profiles),</span>
+        <span class="c1">#              cmap=&#39;gist_rainbow_r&#39;)</span>
+        <span class="c1">#cbar = fig.colorbar(pcmesh)</span>
+
+        <span class="c1">#fig, ax = plt.subplots(1, figsize=(10, 8))</span>
+        <span class="c1">#ax.plot(self.profiles_height[0,:], self.height_grid, &quot;o&quot;, color=&quot;red&quot;)</span>
+        <span class="c1">#ax.plot(self.profiles[0,:], self.height_grid, &quot;-&quot;, color=&quot;red&quot;)</span>
+        
+        <span class="c1">#ax.plot(self.profiles_height[4,:], self.height_grid, &quot;o&quot;, color=&quot;green&quot;)</span>
+        <span class="c1">#ax.plot(self.profiles[24,:], self.height_grid, &quot;-&quot;, color=&quot;green&quot;)</span>
+        
+        <span class="c1">#ax.plot(self.profiles_height[-1,:], self.height_grid, &quot;o&quot;, color=&quot;blue&quot;)</span>
+        <span class="c1">#ax.plot(self.profiles[-1,:], self.height_grid, &quot;-&quot;, color=&quot;blue&quot;)</span>
+
+<div class="viewcode-block" id="gdas.get_pixel"><a class="viewcode-back" href="../../api_doc.html#spectra_mole.advection.gdas.get_pixel">[docs]</a>    <span class="k">def</span> <span class="nf">get_pixel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ts</span><span class="p">,</span> <span class="n">height</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;get nearest advection information</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            ts: timestamp</span>
+<span class="sd">            height: height in profile</span>
+<span class="sd">        </span>
+<span class="sd">        .. warning:: shear not working yet (grid too coarse)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="n">nheight</span> <span class="o">=</span> <span class="n">nearest</span><span class="p">(</span><span class="n">height</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height_grid</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">delta_h</span><span class="p">)</span>      
+        <span class="n">ntime</span> <span class="o">=</span> <span class="n">nearest</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_grid</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">delta_t</span><span class="p">)</span>      
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">profiles</span><span class="p">[</span><span class="n">ntime</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">nheight</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="mf">0.0</span></div></div>
+
+
+<div class="viewcode-block" id="wp_advect"><a class="viewcode-back" href="../../api_doc.html#spectra_mole.advection.wp_advect">[docs]</a><span class="k">class</span> <span class="nc">wp_advect</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;loads advection velocity profile form the windprofiler off-zenith measurement</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        filename: file with rwp off zenith observation</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="n">filename</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">f</span> <span class="o">=</span> <span class="n">netCDF4</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
+        <span class="c1">#self.f = NetCDF.NetCDFFile(filename, &#39;r&#39;) </span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="o">.</span><span class="n">set_auto_maskandscale</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">time_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s2">&quot;Timestamp&quot;</span><span class="p">][:]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">delta_t</span> <span class="o">=</span> <span class="mf">60.</span><span class="o">*</span><span class="mf">60.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s2">&quot;WP_Height&quot;</span><span class="p">][:]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked_invalid</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">)</span>
+        <span class="c1"># quick hack to get 1-d height array</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">delta_h</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">))</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">u_vel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s2">&quot;WP_U&quot;</span><span class="p">][:]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">u_vel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked_greater_equal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">u_vel</span><span class="p">,</span> <span class="mf">1e20</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">v_vel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s2">&quot;WP_V&quot;</span><span class="p">][:]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">v_vel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked_greater_equal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v_vel</span><span class="p">,</span> <span class="mf">1e20</span><span class="p">)</span>
+
+        <span class="c1">#print(&#39;shape u_vel&#39;, self.u_vel.shape)</span>
+        <span class="c1">#print(&#39;available datetimes&#39;)</span>
+        <span class="c1">#for i in range(self.time_list.shape[0]):</span>
+        <span class="c1">#    print(i, datetime.datetime.utcfromtimestamp(self.time_list[i]))</span>
+
+<div class="viewcode-block" id="wp_advect.get_pixel"><a class="viewcode-back" href="../../api_doc.html#spectra_mole.advection.wp_advect.get_pixel">[docs]</a>    <span class="k">def</span> <span class="nf">get_pixel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ts</span><span class="p">,</span> <span class="n">height</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;get nearest advection information</span>
+<span class="sd">        2D interpolation included</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            ts: timestamp</span>
+<span class="sd">            height: height in profile</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            ``advect_vel, 0.0, (u_ts, v_ts)``</span>
+
+<span class="sd">        .. warning:: shear not tested</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="c1">#print(&#39;selected timestamp &#39;, ts)</span>
+        <span class="n">ntime</span> <span class="o">=</span> <span class="n">nearest</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_list</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">delta_t</span><span class="p">)</span>      
+        <span class="c1">#print(&#39;self.ntime &#39;, ntime)</span>
+        <span class="c1">#print(&#39;selected height &#39;, height)</span>
+        <span class="n">nheight</span> <span class="o">=</span> <span class="n">nearest</span><span class="p">(</span><span class="n">height</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">delta_h</span><span class="p">)</span>
+        <span class="c1">#print(&#39;self.nheight &#39;, nheight)</span>
+
+        <span class="k">if</span> <span class="n">ts</span> <span class="o">&lt;</span> <span class="n">ntime</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="c1"># found right boundary</span>
+            <span class="n">n_right</span> <span class="o">=</span> <span class="n">ntime</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">n_left</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">ntime</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">ts</span> <span class="o">&gt;</span> <span class="n">ntime</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="c1"># found left boundary</span>
+            <span class="n">n_right</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">ntime</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_list</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">n_left</span> <span class="o">=</span> <span class="n">ntime</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">height</span> <span class="o">&lt;</span> <span class="n">nheight</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="c1"># found upper boundary</span>
+            <span class="n">n_upper</span> <span class="o">=</span> <span class="n">nheight</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">n_lower</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">nheight</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">height</span> <span class="o">&gt;</span> <span class="n">nheight</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="c1"># found lower boundary</span>
+            <span class="n">n_upper</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">nheight</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">n_lower</span> <span class="o">=</span> <span class="n">nheight</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="n">u_left</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">u_vel</span><span class="p">[</span><span class="n">n_left</span><span class="p">,</span> <span class="n">n_lower</span><span class="p">]</span> <span class="o">+</span> \
+                <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">u_vel</span><span class="p">[</span><span class="n">n_left</span><span class="p">,</span> <span class="n">n_upper</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">u_vel</span><span class="p">[</span><span class="n">n_left</span><span class="p">,</span> <span class="n">n_lower</span><span class="p">])</span><span class="o">/</span> \
+                <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">[</span><span class="n">n_upper</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">[</span><span class="n">n_lower</span><span class="p">])</span><span class="o">*</span> \
+                <span class="p">(</span><span class="n">height</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">[</span><span class="n">n_lower</span><span class="p">])</span>
+        <span class="c1"># print(&#39;u_left &#39;, self.u_vel[n_left, n_lower], u_left,</span>
+        <span class="c1">#        self.u_vel[n_left, n_upper])</span>
+        <span class="n">v_left</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">v_vel</span><span class="p">[</span><span class="n">n_left</span><span class="p">,</span> <span class="n">n_lower</span><span class="p">]</span> <span class="o">+</span> \
+                <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v_vel</span><span class="p">[</span><span class="n">n_left</span><span class="p">,</span> <span class="n">n_upper</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">v_vel</span><span class="p">[</span><span class="n">n_left</span><span class="p">,</span> <span class="n">n_lower</span><span class="p">])</span><span class="o">/</span> \
+                <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">[</span><span class="n">n_upper</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">[</span><span class="n">n_lower</span><span class="p">])</span><span class="o">*</span> \
+                <span class="p">(</span><span class="n">height</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">[</span><span class="n">n_lower</span><span class="p">])</span>
+        <span class="c1"># print(&#39;v_left &#39;, self.v_vel[n_left, n_lower], v_left,</span>
+        <span class="c1">#        self.v_vel[n_left, n_upper])</span>
+        <span class="n">u_right</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">u_vel</span><span class="p">[</span><span class="n">n_right</span><span class="p">,</span> <span class="n">n_lower</span><span class="p">]</span> <span class="o">+</span> \
+                 <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">u_vel</span><span class="p">[</span><span class="n">n_right</span><span class="p">,</span> <span class="n">n_upper</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">u_vel</span><span class="p">[</span><span class="n">n_right</span><span class="p">,</span> <span class="n">n_lower</span><span class="p">])</span><span class="o">/</span> \
+                 <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">[</span><span class="n">n_upper</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">[</span><span class="n">n_lower</span><span class="p">])</span><span class="o">*</span> \
+                 <span class="p">(</span><span class="n">height</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">[</span><span class="n">n_lower</span><span class="p">])</span>
+        <span class="c1"># print(&#39;u_right &#39;, self.u_vel[n_right, n_lower], u_right,</span>
+        <span class="c1">#        self.u_vel[n_right, n_upper])</span>
+        <span class="n">v_right</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">v_vel</span><span class="p">[</span><span class="n">n_right</span><span class="p">,</span> <span class="n">n_lower</span><span class="p">]</span> <span class="o">+</span> \
+                 <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v_vel</span><span class="p">[</span><span class="n">n_right</span><span class="p">,</span> <span class="n">n_upper</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">v_vel</span><span class="p">[</span><span class="n">n_right</span><span class="p">,</span> <span class="n">n_lower</span><span class="p">])</span><span class="o">/</span> \
+                 <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">[</span><span class="n">n_upper</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">[</span><span class="n">n_lower</span><span class="p">])</span><span class="o">*</span> \
+                 <span class="p">(</span><span class="n">height</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">[</span><span class="n">n_lower</span><span class="p">])</span>
+        <span class="c1"># print(&#39;v_right &#39;, self.v_vel[n_right, n_lower], v_right,</span>
+        <span class="c1">#        self.v_vel[n_right, n_upper])</span>
+        <span class="c1"># print(&#39;timestamps left, ts, right &#39;,</span>
+        <span class="c1">#        datetime.datetime.utcfromtimestamp(self.time_list[n_left]),</span>
+        <span class="c1">#        datetime.datetime.utcfromtimestamp(ts),</span>
+        <span class="c1">#        datetime.datetime.utcfromtimestamp(self.time_list[n_right]))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="o">.</span><span class="n">mask</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">u_vel</span><span class="o">.</span><span class="n">mask</span><span class="p">[</span><span class="n">n_left</span><span class="p">]</span>
+        <span class="n">u_left</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">height</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="o">.</span><span class="n">compressed</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">u_vel</span><span class="p">[</span><span class="n">n_left</span><span class="p">]</span><span class="o">.</span><span class="n">compressed</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="o">.</span><span class="n">mask</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">v_vel</span><span class="o">.</span><span class="n">mask</span><span class="p">[</span><span class="n">n_left</span><span class="p">]</span>
+        <span class="n">v_left</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">height</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="o">.</span><span class="n">compressed</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">v_vel</span><span class="p">[</span><span class="n">n_left</span><span class="p">]</span><span class="o">.</span><span class="n">compressed</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="o">.</span><span class="n">mask</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">u_vel</span><span class="o">.</span><span class="n">mask</span><span class="p">[</span><span class="n">n_right</span><span class="p">]</span>
+        <span class="n">u_right</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">height</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="o">.</span><span class="n">compressed</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">u_vel</span><span class="p">[</span><span class="n">n_right</span><span class="p">]</span><span class="o">.</span><span class="n">compressed</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="o">.</span><span class="n">mask</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">v_vel</span><span class="o">.</span><span class="n">mask</span><span class="p">[</span><span class="n">n_right</span><span class="p">]</span>
+        <span class="n">v_right</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">height</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="o">.</span><span class="n">compressed</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">v_vel</span><span class="p">[</span><span class="n">n_right</span><span class="p">]</span><span class="o">.</span><span class="n">compressed</span><span class="p">())</span>
+
+
+        <span class="n">u_ts</span> <span class="o">=</span> <span class="n">u_left</span> <span class="o">+</span> <span class="p">(</span><span class="n">u_right</span> <span class="o">-</span> <span class="n">u_left</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">time_list</span><span class="p">[</span><span class="n">n_right</span><span class="p">]</span> <span class="o">-</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">time_list</span><span class="p">[</span><span class="n">n_left</span><span class="p">])</span><span class="o">*</span><span class="p">(</span><span class="n">ts</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">time_list</span><span class="p">[</span><span class="n">n_left</span><span class="p">])</span>
+        <span class="n">v_ts</span> <span class="o">=</span> <span class="n">v_left</span> <span class="o">+</span> <span class="p">(</span><span class="n">v_right</span> <span class="o">-</span> <span class="n">v_left</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">time_list</span><span class="p">[</span><span class="n">n_right</span><span class="p">]</span> <span class="o">-</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">time_list</span><span class="p">[</span><span class="n">n_left</span><span class="p">])</span><span class="o">*</span><span class="p">(</span><span class="n">ts</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">time_list</span><span class="p">[</span><span class="n">n_left</span><span class="p">])</span>
+
+        <span class="n">advect_vel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">u_ts</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">v_ts</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">advect_vel</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span><span class="n">u_ts</span><span class="p">,</span> <span class="n">v_ts</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="cloudnet_advect"><a class="viewcode-back" href="../../api_doc.html#spectra_mole.advection.cloudnet_advect">[docs]</a><span class="k">class</span> <span class="nc">cloudnet_advect</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;load the advection velocity from the cloudnet categorize file</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        filename: file with rwp off zenith observation</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;---- cloudnet advect -------------------------------------------&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="n">filename</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">f</span> <span class="o">=</span> <span class="n">netCDF4</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="o">.</span><span class="n">set_auto_maskandscale</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">time_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">][:]</span>
+        <span class="c1">#hours since 2015-06-02 00:00:00 +0:00</span>
+        <span class="n">dt_zero</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span>\
+                <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s2">&quot;[0-9]</span><span class="si">{8}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">group</span><span class="p">(),</span> 
+                <span class="s1">&#39;%Y%m</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">time_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">dt_to_timestamp</span><span class="p">(</span><span class="n">dt_zero</span>\
+                <span class="o">+</span><span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">i</span><span class="p">)))</span>\
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_list</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">time_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="nb">int</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">time_list</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">delta_t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">time_list</span><span class="p">))</span>
+        <span class="c1"># height above sea level (given in the nc file) has to be corrected </span>
+        <span class="c1"># for the height of lindenberg</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s2">&quot;model_height&quot;</span><span class="p">][:]</span> <span class="o">-</span> <span class="mf">104.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">delta_h</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">u_vel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s2">&quot;uwind&quot;</span><span class="p">][:]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">u_vel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked_less_equal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">u_vel</span><span class="p">,</span> <span class="o">-</span><span class="mf">100.</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">v_vel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s2">&quot;vwind&quot;</span><span class="p">][:]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">v_vel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked_less_equal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v_vel</span><span class="p">,</span> <span class="o">-</span><span class="mf">100.</span><span class="p">)</span>
+        <span class="c1">#print(&#39;heights &#39;, self.height)</span>
+        <span class="c1">#print(&#39;times &#39;, self.time_list)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;cloudnet advect time range &quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_list</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">),</span>
+              <span class="bp">self</span><span class="o">.</span><span class="n">time_list</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">),</span>
+              <span class="n">ts_to_dt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">time_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)),</span>
+              <span class="n">ts_to_dt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">time_list</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;delta t &quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">delta_t</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="cloudnet_advect.get_pixel"><a class="viewcode-back" href="../../api_doc.html#spectra_mole.advection.cloudnet_advect.get_pixel">[docs]</a>    <span class="k">def</span> <span class="nf">get_pixel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ts</span><span class="p">,</span> <span class="n">height</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;get nearest advection information</span>
+<span class="sd">        2D interpolation included</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            ts: timestamp</span>
+<span class="sd">            height: height in profile</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            ``advect_vel, shear, (u_ts, v_ts)``</span>
+
+<span class="sd">        .. warning:: shear not reliable yet (grid too coarse)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">#print(&#39;selected timestamp &#39;, ts)</span>
+        <span class="n">ntime</span> <span class="o">=</span> <span class="n">nearest</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_list</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">delta_t</span><span class="p">)</span>      
+        <span class="c1">#print(&#39;self.ntime &#39;, ntime)</span>
+        <span class="c1">#print(&#39;selected height &#39;, height)</span>
+        <span class="n">nheight</span> <span class="o">=</span> <span class="n">nearest</span><span class="p">(</span><span class="n">height</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">delta_h</span><span class="p">)</span>      
+        <span class="c1">#print(&#39;self.nheight &#39;, nheight)</span>
+
+        <span class="c1">#running mean to prevent steps</span>
+        <span class="c1">#u_vel = self.u_vel[ntime[0], nheight[0]]</span>
+        <span class="n">u_vel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">height</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">u_vel</span><span class="p">[</span><span class="n">ntime</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span>
+        <span class="c1">#v_vel = self.v_vel[ntime[0], nheight[0]]</span>
+        <span class="n">v_vel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">height</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">v_vel</span><span class="p">[</span><span class="n">ntime</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span>
+        <span class="n">advect_vel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">u_vel</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="n">v_vel</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">shear_u</span> <span class="o">=</span> <span class="mf">0.5</span><span class="o">*</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">u_vel</span><span class="p">[</span><span class="n">ntime</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">nheight</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">u_vel</span><span class="p">[</span><span class="n">ntime</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">nheight</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span><span class="o">/</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">[</span><span class="n">nheight</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">[</span><span class="n">nheight</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span> \
+                     <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">u_vel</span><span class="p">[</span><span class="n">ntime</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">nheight</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">u_vel</span><span class="p">[</span><span class="n">ntime</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">nheight</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">/</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">[</span><span class="n">nheight</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">[</span><span class="n">nheight</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span> 
+        <span class="n">shear_v</span> <span class="o">=</span> <span class="mf">0.5</span><span class="o">*</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">v_vel</span><span class="p">[</span><span class="n">ntime</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">nheight</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">v_vel</span><span class="p">[</span><span class="n">ntime</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">nheight</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span><span class="o">/</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">[</span><span class="n">nheight</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">[</span><span class="n">nheight</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span> \
+                     <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v_vel</span><span class="p">[</span><span class="n">ntime</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">nheight</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">v_vel</span><span class="p">[</span><span class="n">ntime</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">nheight</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">/</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">[</span><span class="n">nheight</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">[</span><span class="n">nheight</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span> 
+        <span class="k">return</span> <span class="n">advect_vel</span><span class="p">,</span> <span class="n">shear_u</span><span class="o">+</span><span class="n">shear_v</span><span class="p">,</span> <span class="p">(</span><span class="n">u_vel</span><span class="p">,</span> <span class="n">v_vel</span><span class="p">)</span></div></div>
+
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="c1">#profile = gdas(datetime.datetime(2013, 9, 25), np.arange(300,7000,100))</span>
+    <span class="c1">#print(profile.get_pixel(1380090931, 7))</span>
+    
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;--- wind profiler -----------------------------------------&quot;</span><span class="p">)</span>
+    <span class="c1">#profile = wp_advect(&quot;../colrawi2/wpl_20150602_002408.nc&quot;)</span>
+    <span class="c1">#print(&#39;advect vel &#39;, profile.get_pixel(1433238641, 700.))</span>
+    <span class="c1">#print(&#39;advect vel &#39;, profile.get_pixel(1433239841, 700.))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;--- cloudnet  -----------------------------------------&quot;</span><span class="p">)</span>
+    <span class="n">profile</span> <span class="o">=</span> <span class="n">cloudnet_advect</span><span class="p">(</span><span class="s2">&quot;/home/radenz/colrawi2/cloudnet/20150602_lindenberg_categorize.nc&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;advect vel &#39;</span><span class="p">,</span> <span class="n">profile</span><span class="o">.</span><span class="n">get_pixel</span><span class="p">(</span><span class="mi">1433238641</span><span class="p">,</span> <span class="mf">700.</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;advect vel &#39;</span><span class="p">,</span> <span class="n">profile</span><span class="o">.</span><span class="n">get_pixel</span><span class="p">(</span><span class="mi">1433239841</span><span class="p">,</span> <span class="mf">700.</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;advect vel &#39;</span><span class="p">,</span> <span class="n">profile</span><span class="o">.</span><span class="n">get_pixel</span><span class="p">(</span><span class="mi">1433239841</span><span class="p">,</span> <span class="mf">4300.</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;advect vel &#39;</span><span class="p">,</span> <span class="n">profile</span><span class="o">.</span><span class="n">get_pixel</span><span class="p">(</span><span class="mi">1433239841</span><span class="p">,</span> <span class="mf">4500.</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;advect vel &#39;</span><span class="p">,</span> <span class="n">profile</span><span class="o">.</span><span class="n">get_pixel</span><span class="p">(</span><span class="mi">1433239841</span><span class="p">,</span> <span class="mf">4700.</span><span class="p">))</span>
+
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Martin Radenz, Johannes Bühl
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
