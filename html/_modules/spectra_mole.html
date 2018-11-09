@@ -164,6 +164,7 @@
 <span class="kn">import</span> <span class="nn">scipy.ndimage</span>
 <span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="k">import</span> <span class="n">curve_fit</span>
 
+
 <span class="c1">#from numba import jit</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">helpers</span> <span class="k">as</span> <span class="n">h</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">recPeakFinder</span>
@@ -1214,6 +1215,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">delta_t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">time_list</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">delta_v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vel_list</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">range_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fspec</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s2">&quot;range&quot;</span><span class="p">][:]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">range_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">range_list</span><span class="o">.</span><span class="n">data</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">delta_h</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">range_list</span><span class="p">))</span>
         <span class="k">assert</span> <span class="nb">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">delta_h</span> <span class="o">-</span> <span class="mf">28.78</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;delta h too much off&#39;</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;load cloud radar file &quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">files</span><span class="p">[</span><span class="s1">&#39;spec&#39;</span><span class="p">])</span>

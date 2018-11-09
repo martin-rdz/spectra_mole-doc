@@ -7,7 +7,7 @@ algorithm proposed by Radenz et al [2018, AMT](<https://doi.org/10.5194/amt-11-5
 <a href="https://doi.org/10.5281/zenodo.1419486"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.1419486.svg" alt="DOI"></a>
 
 
-Comprehensive documentation is available at [spectra_mole-doc](https://martin-rdz.github.io/spectra_mole-doc/)
+Technical documentation is available at [spectra_mole-doc](https://martin-rdz.github.io/spectra_mole-doc/)
 
 ### Requirements
 
